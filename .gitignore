@@ -125,3 +125,5 @@ logs/
 !requirements.txt
 !README.md
 !themahdiai_blueprint.md
+*.db
+scratch/

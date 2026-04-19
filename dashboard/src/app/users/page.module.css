@@ -1,0 +1,89 @@
+.card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.tableHeader {
+  margin-bottom: 24px;
+}
+
+.tableHeader h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.tableHeader p {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+}
+
+.tableWrap {
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.tableWrap table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableWrap th {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 14px 20px;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.tableWrap td {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 0.92rem;
+  color: #e2e8f0;
+}
+
+.tableWrap tr {
+  cursor: pointer;
+}
+
+.tableWrap tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.un {
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.fn {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.tokenVal {
+  font-family: 'Outfit', monospace;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.emptyCell {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 48px 20px !important;
+}

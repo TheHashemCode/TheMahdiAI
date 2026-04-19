@@ -3,14 +3,14 @@
 ## 1. Telegram Bot Interface
 
 ### Commands
-- `/start`: User onboarding.
-- `/language [code]`: Change preference (`id`, `en`, `ar`).
-- `/new_session`: Reset chat context.
-- `/ask [query]`: Execute RAG search and AI response.
-- `/download [url]`: YouTube video/audio downloader.
-- `/notif [url]`: Subscribe to YouTube channel notifications.
-- `/captioning`: Vision API for image description.
-- `/search [query]`: Web search summarization.
+- `/start`: User onboarding and language selection.
+- `/language [code]`: Change preference (English, Arabic, Persian, etc.).
+- `/new_session`: Reset chat context and start fresh.
+- `/ask [query]`: Execute RAG search and AI response (Phase 2).
+- `/download [url]`: YouTube video/audio downloader (Phase 2).
+- `/notif [url]`: Subscribe to YouTube channel notifications (Phase 3).
+- `/captioning`: Vision API for image description (Phase 2).
+- `/search [query]`: Basic web search summarization.
 
 ### Free-Text Logic
 Messages without commands are treated as conversational inputs, maintaining session history and triggering RAG if relevant knowledge is identified.
@@ -37,8 +37,8 @@ Messages without commands are treated as conversational inputs, maintaining sess
 ## 3. Admin Dashboard (Next.js)
 
 ### Primary Modules
-- **Analytics**: Real-time KPI monitoring (DAU, Tokens, Costs).
-- **User Management**: Limit adjustments and status control.
-- **Reference Manager**: Knowledge base ingestion (PDF/Text).
-- **Broadcast Tool**: Mass messaging with delivery tracking.
-- **Failover Logs**: Real-time AI provider status.
+- **Analytics**: Real-time monitoring of DAU, Total Tokens, and Multi-provider Costs.
+- **User Management**: Integrated user list with registration metadata and activity status.
+- **Session History**: Dedicated full-page audit trail for all chat conversations.
+- **System Orchestration**: Dynamic control over System Prompts, Token Limits, and Rate Limits.
+- **Security Control**: Redis-backed quota enforcement with Database persistent fallback.

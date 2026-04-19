@@ -2,10 +2,12 @@
 
 ## Phase 1: Foundation (Week 1–2)
 - [x] Boilerplate setup (FastAPI + SQLModel).
-- [x] Telegram Bot Core commands (`/start`, `/language`).
+- [x] Telegram Bot Core commands (`/start`, `/language`). (Supports 15+ global languages).
 - [x] 3-Level AI Gateway with Failover & Streaming.
-- [ ] Admin Dashboard basic (User list, Stats).
-- [ ] Web search integration (`/search`).
+- [x] Admin Dashboard 1.0 (Users, Sessions, Full-page History).
+- [x] Smart Quota & Rate Limiting (Redis + DB Fallback).
+- [x] Concurrent Message Processing.
+- [ ] Advanced Web Search integration.
 
 ## Phase 2: Intelligence & Media (Week 3–5)
 - [ ] Qdrant Vector DB integration.

@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handler for the /search command, leveraging LLM built-in search tools."""
     if not context.args:
-        await update.message.reply_text("Penggunaan: /search [pertanyaan/topik]")
+        await update.message.reply_text("Usage: /search [question/topic]")
         return
         
     query = " ".join(context.args)
@@ -16,7 +16,7 @@ async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     logger.info(f"User {user.id} requested search: {query}")
     
-    await update.message.reply_text("Sedang mencari informasi untuk Anda... 🔍")
+    await update.message.reply_text("Searching for information... 🔍")
     
     # We instruct the LLM to search the web to answer this.
     # Note: For true built-in tool usage, litellm supports passing `tools` and `tool_choice`,
@@ -33,7 +33,7 @@ async def search_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         },
         {
             "role": "user",
-            "content": f"Tolong cari informasi tentang: {query}"
+            "content": f"Please find information about: {query}"
         }
     ]
     

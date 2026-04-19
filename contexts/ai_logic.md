@@ -46,6 +46,7 @@ The system uses **LiteLLM** and a **Circuit Breaker** to ensure high availabilit
 
 ### Session Management
 - **Persistence**: PostgreSQL (`chat_sessions` table).
+- **Language Support**: Supports 15+ preset languages + Manual Custom Input (Manual mode triggers a temporary session state to capture user input).
 - **Reset**: `/new_session` command marks the current session as inactive and starts a fresh one.
 - **Logging**: Every interaction recorded in `token_logs` for cost/latency audit.
 

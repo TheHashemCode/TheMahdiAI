@@ -90,6 +90,7 @@ async def call_llm_stream(
             messages=messages,
             api_key=api_key,
             stream=True,
+            stream_options={"include_usage": True},
             **kwargs
         )
         
@@ -153,11 +154,11 @@ async def generate_response_stream(
             continue
     
     # All providers failed
-    yield "Maaf, seluruh layanan AI sedang sibuk saat ini. Mohon coba beberapa saat lagi.", {
+    yield "Sorry, all AI services are currently busy. Please try again in a few moments.", {
         "done": True,
         "error": True,
         "provider": "none",
-        "content": "Maaf, seluruh layanan AI sedang sibuk saat ini.",
+        "content": "Sorry, all AI services are currently busy.",
         "usage": {}
     }
 

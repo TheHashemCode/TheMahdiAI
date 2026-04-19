@@ -14,7 +14,7 @@ def create_bot_app():
     if not settings.TELEGRAM_BOT_TOKEN or settings.TELEGRAM_BOT_TOKEN == "YOUR_BOT_TOKEN_HERE":
         raise ValueError("TELEGRAM_BOT_TOKEN is not set.")
         
-    application = ApplicationBuilder().token(settings.TELEGRAM_BOT_TOKEN).build()
+    application = ApplicationBuilder().token(settings.TELEGRAM_BOT_TOKEN).concurrent_updates(True).build()
     
     # Register handlers
     application.add_handler(CommandHandler("start", start_command))
@@ -23,6 +23,6 @@ def create_bot_app():
     application.add_handler(CommandHandler("search", search_command))
     
     application.add_handler(CallbackQueryHandler(button_callback))
-    application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
+    application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message, block=False))
     
     return application

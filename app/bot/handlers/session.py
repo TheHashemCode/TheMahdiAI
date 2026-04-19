@@ -20,7 +20,7 @@ async def new_session_command(update: Update, context: ContextTypes.DEFAULT_TYPE
         db_user = result.scalar_one_or_none()
 
         if not db_user:
-            await update.message.reply_text("Silakan ketik /start terlebih dahulu.")
+            await update.message.reply_text("Please type /start first.")
             return
 
         # Close all active sessions
@@ -46,7 +46,7 @@ async def new_session_command(update: Update, context: ContextTypes.DEFAULT_TYPE
 
     logger.info(f"User {tg_user.id} started a new session.")
     await update.message.reply_text(
-        "✨ Sesi percakapan baru telah dimulai.\n"
-        "Konteks sebelumnya telah dihapus dari ingatan saya.\n\n"
-        "Silakan bertanya apa saja!"
+        "✨ New conversation session started.\n"
+        "Previous context has been cleared from my memory.\n\n"
+        "Feel free to ask me anything!"
     )

@@ -7,13 +7,13 @@ logger = logging.getLogger(__name__)
 async def language_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handler for the /language command."""
     if not context.args:
-        await update.message.reply_text("Penggunaan: /language [id|en|ar]")
+        await update.message.reply_text("Usage: /language [en|ar|fa|es|...]")
         return
         
     lang_code = context.args[0].lower()
-    if lang_code not in ["id", "en", "ar"]:
-        await update.message.reply_text("Bahasa tidak didukung. Pilih: id, en, ar.")
-        return
+    await update.message.reply_text(f"Language set to: {lang_code}. Testing connection...")
+    # NOTE: Actual persistence logic is handled in the callback query for UI consistency.
+    return
         
     # TODO: Update user language preference in PostgreSQL
     

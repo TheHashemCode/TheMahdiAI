@@ -24,24 +24,52 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 username=user.username,
                 first_name=user.first_name,
                 last_name=user.last_name,
-                language="id" # default
+                language="en" # switch default to english for global reach
             )
             session.add(db_user)
             await session.commit()
     
     welcome_message = (
         f"Assalamu'alaikum {user.first_name}! 👋\n\n"
-        "Saya adalah TheMahdiAI. Silakan pilih bahasa preferensi Anda di bawah ini:\n"
-        "*(Please select your preferred language below):*"
+        "Welcome to **TheMahdiAI**. Please select your preferred language below:\n"
+        "*(Silakan pilih bahasa preferensi Anda di bawah ini):*"
     )
     
+    # Priority row
     keyboard = [
         [
-            InlineKeyboardButton("🇮🇩 Indonesia", callback_data="lang_id"),
             InlineKeyboardButton("🇬🇧 English", callback_data="lang_en"),
-            InlineKeyboardButton("🇸🇦 العربية", callback_data="lang_ar")
+            InlineKeyboardButton("🇸🇦 العربية", callback_data="lang_ar"),
+            InlineKeyboardButton("🇮🇷 Persian", callback_data="lang_fa"),
+            InlineKeyboardButton("🇪🇸 Spanish", callback_data="lang_es"),
+        ],
+        # Second priority / large groups
+        [
+            InlineKeyboardButton("🇲🇾 Malaysia", callback_data="lang_ms"),
+            InlineKeyboardButton("🇮🇩 Indonesia", callback_data="lang_id"),
+            InlineKeyboardButton("🇳🇱 Dutch", callback_data="lang_nl"),
+            InlineKeyboardButton("🇰🇷 Korean", callback_data="lang_ko"),
+        ],
+        # Third row
+        [
+            InlineKeyboardButton("🇹🇷 Turkish", callback_data="lang_tr"),
+            InlineKeyboardButton("🇩🇪 German", callback_data="lang_de"),
+            InlineKeyboardButton("🇦🇿 Azerbaijani", callback_data="lang_az"),
+            InlineKeyboardButton("🇫🇷 French", callback_data="lang_fr"),
+        ],
+        # Fourth row
+        [
+            InlineKeyboardButton("🇵🇱 Polish", callback_data="lang_pl"),
+            InlineKeyboardButton("🇵🇰 Urdu", callback_data="lang_ur"),
+            InlineKeyboardButton("🇨🇳 Mandarin", callback_data="lang_zh"),
+            InlineKeyboardButton("🇮🇱 Hebrew", callback_data="lang_he"),
+        ],
+        # Custom option
+        [
+            InlineKeyboardButton("✨ Other (Type manually)", callback_data="lang_custom")
         ]
     ]
+    
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     await update.message.reply_text(welcome_message, reply_markup=reply_markup, parse_mode="Markdown")

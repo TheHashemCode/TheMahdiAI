@@ -27,11 +27,12 @@ Built for the community, it integrates Quranic texts, authentic Hadiths, and sch
 ## ✨ Key Features
 
 - **🛡️ 3-Level AI Failover Gateway**: Automatic fallback between OpenAI, Anthropic, and Groq using LiteLLM and Circuit Breakers.
-- **⚡ Real-time Streaming**: Progressive response delivery in Telegram for a premium, low-latency feel.
-- **📚 RAG-Ready Architecture**: Built-in support for Qdrant Vector DB to ground AI responses in verified sources.
-- **🌐 Multi-lingual Support**: Native support for Indonesian, English, and Arabic.
-- **🛠️ Admin Configurable**: Dynamic system prompts and bot settings via PostgreSQL dashboard.
-- **📊 Token & Cost Intelligence**: Detailed logging of token usage and latency across all providers.
+- **⚡ Parallel Processing & Streaming**: Concurrent message handling with progressive response delivery for a low-latency feel.
+- **🔒 Smart Quota & Rate Limiting**: Built-in protection with Redis-based limits (minutely/daily) and persistent Database Fallback.
+- **📊 Premium Admin Dashboard**: Modern Next.js dashboard to manage users, monitor real-time sessions, and audit detailed chat histories on dedicated pages.
+- **📚 RAG-Ready Architecture**: Built-in support for Qdrant Vector DB to ground AI responses in verified knowledge sources.
+- **🌐 Global Multi-lingual Support**: Native support for 15+ priority languages with manual custom entry.
+- **🛠️ Dynamic Orchestration**: Hot-reload system prompts, token limits, and bot configurations via the dashboard.
 
 ## 🚀 Getting Started
 
@@ -67,10 +68,17 @@ Built for the community, it integrates Quranic texts, authentic Hadiths, and sch
    alembic upgrade head
    ```
 
-5. **Run the Application**:
+5. **Run API (Backend)**:
    ```bash
    python -m uvicorn app.main:app --reload
    ```
+
+6. **Run Dashboard (Frontend)**:
+   ```bash
+   cd dashboard
+   npm run dev
+   ```
+   *Dashboard will be available at [http://localhost:10313](http://localhost:10313)*
 
 ## 🏗️ Technical Stack
 
@@ -104,5 +112,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 <p align="center">
-  <i>Developed by Wau Hashem & Pena Digital Projects</i>
+  <i>Developed by Wau Hashem & The Hashem Code Projects</i>
 </p>

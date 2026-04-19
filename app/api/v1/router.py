@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
+from app.api.v1.endpoints import admin
+
 api_router = APIRouter()
 
-# TODO: Include future routers here
-# api_router.include_router(webhook.router, prefix="/webhook", tags=["webhook"])
+api_router.include_router(admin.router, prefix="/admin", tags=["admin"])
