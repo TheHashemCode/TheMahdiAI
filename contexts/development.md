@@ -13,10 +13,12 @@
 - **Branching**: Use `feat/...` or `fix/...`. Never commit directly to `main`.
 - **Typing**: Mandatory type hints for all function signatures.
 - **Pydantic**: Use for every external input/output and environment config.
+- **Dependency Management**: Use `uv` (`uv pip install`) for faster development rounds.
+- **Migrations**: Always use `alembic revision --autogenerate` for schema changes.
 
 ### AI Interaction
 - When querying RAG (`/ask`), always ensure the `score_threshold` is respected to avoid hallucinated context.
-- Keep the `context_window` small (last 3-5 messages) in Redis to minimize token bloat.
+- Keep the `context_window` stable (currently last 20 messages) in `chat_sessions` to balance memory and token cost.
 
 ### Error Handling
 - Never return raw AI errors to the user. Wrap in human-readable messages (Indonesian primary).

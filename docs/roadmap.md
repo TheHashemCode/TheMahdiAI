@@ -1,9 +1,9 @@
 # Project Roadmap & Milestones
 
 ## Phase 1: Foundation (Week 1–2)
-- [ ] Boilerplate setup (FastAPI + SQLModel).
-- [ ] Telegram Bot Core commands (`/start`, `/language`).
-- [ ] 3-Level AI Gateway with Failover.
+- [x] Boilerplate setup (FastAPI + SQLModel).
+- [x] Telegram Bot Core commands (`/start`, `/language`).
+- [x] 3-Level AI Gateway with Failover & Streaming.
 - [ ] Admin Dashboard basic (User list, Stats).
 - [ ] Web search integration (`/search`).
 

@@ -5,15 +5,20 @@
 The system uses **LiteLLM** and a **Circuit Breaker** to ensure high availability.
 
 ### Flow Logic
-1. **Primary**: Attempt GPT-4o.
+1. **Primary**: Attempt OpenAI (Supports custom `OPENAI_URL` via `api_base`).
 2. **Error Filter**: Catch 429 (Rate Limit), 500 (Server Error), or Timeouts.
-3. **Backup 1**: If Primary fails, switch to Claude 3.5.
-4. **Backup 2**: If Backup 1 fails, switch to Groq (Llama 3).
+3. **Backup 1**: If Primary fails, switch to Anthropic.
+4. **Backup 2**: If Backup 1 fails, switch to Groq.
 5. **Fallback**: If all fail, return "Service Busy" message.
 
+### Streaming Implementation
+- **Mode**: Progressive editing (Simulated Streaming).
+- **Interval**: Max 1 edit per second to avoid Telegram Rate Limits.
+- **Visuals**: Uses a typing cursor (▍) during generation.
+
 ### Circuit Breaker
-- **Trigger**: 5 consecutive failures trips the breaker (`OPEN`).
-- **Recovery**: Switches to `HALF_OPEN` after 5 minutes to test 1 request.
+- **Trigger**: Recorded in `app/core/circuit_breaker.py`.
+- **Logic**: Prevents cascading failures by short-circuiting providers that time out or return server errors.
 
 ---
 
@@ -26,17 +31,23 @@ The system uses **LiteLLM** and a **Circuit Breaker** to ensure high availabilit
 
 ### Retrieval & Augmentation
 - **Search**: Top 5 chunks with similarity > 0.75.
+- **System Prompt**: Dynamic injection via `bot_config` table. Supports placeholders `{user_name}` and `{user_language}`.
 - **Context Injection**:
   ```
-  [Reference Context]
-  ...relevant chunks...
+  [System Instruction]
+  ...from DB (bot_config)...
   
   [Conversation History]
-  ...last 3 interactions...
+  ...last 20 messages (stored in chat_sessions.context_window)...
   
   [User Question]
   ...current query...
   ```
+
+### Session Management
+- **Persistence**: PostgreSQL (`chat_sessions` table).
+- **Reset**: `/new_session` command marks the current session as inactive and starts a fresh one.
+- **Logging**: Every interaction recorded in `token_logs` for cost/latency audit.
 
 ---
 

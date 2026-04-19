@@ -41,6 +41,13 @@ erDiagram
         timestamptz created_at
     }
 
+    bot_config {
+        uuid id PK
+        varchar key UK
+        varchar value
+        varchar description
+    }
+
     broadcasts {
         uuid id PK
         text message_content
@@ -60,6 +67,7 @@ erDiagram
     users ||--o{ chat_sessions : "has"
     users ||--o{ token_logs : "generates"
     users ||--o{ youtube_monitors : "subscribes"
+    users ||--o{ bot_config : "updates"
     broadcasts ||--o{ broadcast_logs : "tracks"
 ```
 

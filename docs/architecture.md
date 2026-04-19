@@ -85,7 +85,7 @@ graph TD
     end
 
     subgraph "Reverse Proxy"
-        CF["Cloudflare Tunnel\nclaw-br1dg3.penadigital.tech"]
+        CF["Cloudflare Tunnel\nwebsite.com"]
     end
 
     subgraph "Docker Host - PVE LXC"

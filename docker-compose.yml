@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: themahdiai-postgres
+    restart: unless-stopped
+    profiles: ["infra"] # Opsional: Gunakan external host jika sudah ada di PVE
+    environment:
+      POSTGRES_DB: themahdiai
+      POSTGRES_USER: themahdiai
+      POSTGRES_PASSWORD: development_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U themahdiai -d themahdiai"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - themahdiai-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: themahdiai-redis
+    restart: unless-stopped
+    profiles: ["infra"] # Opsional: Gunakan external host jika sudah ada di PVE
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - themahdiai-net
+
+  qdrant:
+    image: qdrant/qdrant:v1.12.1
+    container_name: themahdiai-qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant-data:/qdrant/storage
+    networks:
+      - themahdiai-net
+
+volumes:
+  postgres-data:
+  redis-data:
+  qdrant-data:
+
+networks:
+  themahdiai-net:
+    driver: bridge
