@@ -1,5 +1,14 @@
 # Changelog
 
+## [Phase 2.0] - 2026-04-26
+### Added
+- **Google NotebookLM Integration**: Added `notebooklm-py` with Playwright browser-based authentication to query NotebookLM directly.
+- **Smart Fallback Chain**: Introduced a configurable fallback system (up to 5 notebooks) for `/ask` command to ensure at least 2 references are retrieved for every query.
+- **Anti-Banned Queue**: Added `asyncio.Lock()` in `NotebookService` to process queries sequentially and avoid rate-limiting/banning from Google.
+- **Notebooks Dashboard**: New `/notebooks` page in the Next.js dashboard to manage connections, sync notebooks, add reference sources (URLs), and test queries.
+- **Interactive History Modal**: Clickable table rows in the dashboard history that reveal full Markdown answers and detailed reference tracking.
+- **Automated Citations**: AI responses automatically append "📚 Referensi Sumber" with bolded inline citations mapped to source titles.
+
 ## [Phase 1.1] - 2026-04-19
 ### Added
 - **Admin Dashboard**: Full-featured Next.js 15+ dashboard with glassmorphism design.

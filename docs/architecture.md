@@ -16,6 +16,7 @@ graph TD
     subgraph "Intelligence Layer"
         RAG["RAG Engine\n(LangChain)"]
         AI_GW["AI Gateway\n(LiteLLM)"]
+        NBLM["NotebookLM Client\n(notebooklm-py)"]
         WHISPER["Transcription\n(Whisper API / faster-whisper)"]
     end
 
@@ -24,12 +25,14 @@ graph TD
         VS[("Qdrant\n(Vector Store)")]
         CACHE[("Redis 7\n(Session, Queue, Rate Limit)")]
         S3["Object Storage\n(MinIO / Local FS)\n(PDFs, Audio, Video)"]
+        PW["Playwright Auth\n(Local Storage JSON)"]
     end
 
     subgraph "AI Providers - Failover Chain"
         P["Primary: GPT-4o"]
         B1["Backup 1: Claude 3.5 Sonnet"]
         B2["Backup 2: Groq - Llama 3"]
+        GN["Google NotebookLM"]
     end
 
     subgraph "External APIs"
@@ -38,9 +41,12 @@ graph TD
 
     TG <--> BE
     BE --> RAG
+    BE --> NBLM
     BE --> WK
     RAG --> VS
     RAG --> AI_GW
+    NBLM --> PW
+    NBLM --> GN
     AI_GW --> P
     AI_GW --> B1
     AI_GW --> B2

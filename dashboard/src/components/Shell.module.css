@@ -29,6 +29,15 @@
   z-index: 10;
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wrapper.sidebarClosed .sidebar {
+  transform: translateX(-100%);
+}
+
+.wrapper.sidebarClosed .mainContent {
+  margin-left: 0;
 }
 
 .brand {
@@ -179,6 +188,26 @@
   flex: 1;
   padding: 36px 48px;
   min-height: 100vh;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menuBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.menuBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
 }
 
 .pageHeader {

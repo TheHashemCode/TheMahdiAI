@@ -28,6 +28,18 @@ async def lifespan(app: FastAPI):
     if settings.TELEGRAM_BOT_TOKEN and settings.TELEGRAM_BOT_TOKEN != "YOUR_BOT_TOKEN_HERE":
         bot_app = create_bot_app()
         await bot_app.initialize()
+        
+        # Set Telegram bot commands menu
+        from telegram import BotCommand
+        commands = [
+            BotCommand("start", "Start the bot and choose language"),
+            BotCommand("ask", "Ask a question to the AI Knowledge Base"),
+            BotCommand("new_session", "Start a fresh chat session"),
+            BotCommand("language", "Change your preferred language"),
+            BotCommand("search", "Search the web for information")
+        ]
+        await bot_app.bot.set_my_commands(commands)
+        
         if settings.TELEGRAM_WEBHOOK_URL:
             # Webhook mode
             await bot_app.bot.set_webhook(url=settings.TELEGRAM_WEBHOOK_URL, secret_token=settings.TELEGRAM_WEBHOOK_SECRET)

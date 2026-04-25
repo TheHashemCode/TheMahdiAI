@@ -6,7 +6,7 @@
 - `/start`: User onboarding and language selection.
 - `/language [code]`: Change preference (English, Arabic, Persian, etc.).
 - `/new_session`: Reset chat context and start fresh.
-- `/ask [query]`: Execute RAG search and AI response (Phase 2).
+- `/ask [query]`: Query the configured Google NotebookLM knowledge base. Includes a Smart Fallback Chain (checks up to 5 prioritized notebooks) to ensure high-quality answers with at least 2 references.
 - `/download [url]`: YouTube video/audio downloader (Phase 2).
 - `/notif [url]`: Subscribe to YouTube channel notifications (Phase 3).
 - `/captioning`: Vision API for image description (Phase 2).

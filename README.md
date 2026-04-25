@@ -26,13 +26,13 @@ Built for the community, it integrates Quranic texts, authentic Hadiths, and sch
 
 ## ✨ Key Features
 
+- **🧠 Google NotebookLM Integration**: Direct API integration via `notebooklm-py` and Playwright for authenticating and querying Google's powerful RAG engine directly from Telegram.
 - **🛡️ 3-Level AI Failover Gateway**: Automatic fallback between OpenAI, Anthropic, and Groq using LiteLLM and Circuit Breakers.
 - **⚡ Parallel Processing & Streaming**: Concurrent message handling with progressive response delivery for a low-latency feel.
 - **🔒 Smart Quota & Rate Limiting**: Built-in protection with Redis-based limits (minutely/daily) and persistent Database Fallback.
-- **📊 Premium Admin Dashboard**: Modern Next.js dashboard to manage users, monitor real-time sessions, and audit detailed chat histories on dedicated pages.
-- **📚 RAG-Ready Architecture**: Built-in support for Qdrant Vector DB to ground AI responses in verified knowledge sources.
+- **📊 Premium Admin Dashboard**: Modern Next.js dashboard to manage Notebooks, configure fallback chains, monitor real-time sessions, and audit detailed chat histories on dedicated pages.
 - **🌐 Global Multi-lingual Support**: Native support for 15+ priority languages with manual custom entry.
-- **🛠️ Dynamic Orchestration**: Hot-reload system prompts, token limits, and bot configurations via the dashboard.
+- **🛠️ Dynamic Orchestration**: Hot-reload system prompts, Telegram bot menus, and fallback chains via the dashboard.
 
 ## 🚀 Getting Started
 
@@ -85,8 +85,9 @@ Built for the community, it integrates Quranic texts, authentic Hadiths, and sch
 - **Framework**: [FastAPI](https://fastapi.tiangolo.com/)
 - **ORM**: [SQLModel](https://sqlmodel.tiangolo.com/) (SQLAlchemy + Pydantic)
 - **AI Gateway**: [LiteLLM](https://docs.litellm.ai/)
+- **Knowledge Engine**: Google NotebookLM (`notebooklm-py` + Playwright)
 - **Migrations**: [Alembic](https://alembic.sqlalchemy.org/)
-- **Vector DB**: [Qdrant](https://qdrant.tech/)
+- **Vector DB**: [Qdrant](https://qdrant.tech/) (Planned)
 
 ## 📂 Project Structure
 

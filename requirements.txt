@@ -12,3 +12,5 @@ alembic==1.13.1
 python-multipart==0.0.9
 uvicorn[standard]==0.29.0
 python-dotenv==1.0.1
+notebooklm-py[browser]
+playwright

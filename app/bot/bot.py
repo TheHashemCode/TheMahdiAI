@@ -4,6 +4,7 @@ from app.bot.handlers.start import start_command
 from app.bot.handlers.language import language_command
 from app.bot.handlers.session import new_session_command
 from app.bot.handlers.search import search_command
+from app.bot.handlers.ask import ask_command
 from app.bot.handlers.callback import button_callback
 from app.bot.handlers.message import handle_message
 
@@ -21,6 +22,7 @@ def create_bot_app():
     application.add_handler(CommandHandler("language", language_command))
     application.add_handler(CommandHandler("new_session", new_session_command))
     application.add_handler(CommandHandler("search", search_command))
+    application.add_handler(CommandHandler("ask", ask_command))
     
     application.add_handler(CallbackQueryHandler(button_callback))
     application.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message, block=False))
