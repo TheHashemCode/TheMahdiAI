@@ -50,6 +50,15 @@ async def list_configs(session: AsyncSession = Depends(get_session)) -> List[Bot
     result = await session.execute(select(BotConfig))
     return result.scalars().all()
 
+ALLOWED_CONFIG_KEYS = [
+    "system_prompt",
+    "active_notebook_id",
+    "notebook_fallback_chain",
+    "fallback_min_refs",
+    "max_daily_tokens",
+    "max_req_per_minute"
+]
+
 @router.post("/configs")
 async def update_config(config_data: Dict[str, str], session: AsyncSession = Depends(get_session)):
     """Update or create a bot config value."""
@@ -58,6 +67,9 @@ async def update_config(config_data: Dict[str, str], session: AsyncSession = Dep
     
     if not key or value is None:
         raise HTTPException(status_code=400, detail="Key and value are required")
+        
+    if key not in ALLOWED_CONFIG_KEYS:
+        raise HTTPException(status_code=403, detail=f"Configuration key '{key}' is not allowed to be updated directly.")
         
     stmt = select(BotConfig).where(BotConfig.key == key)
     result = await session.execute(stmt)

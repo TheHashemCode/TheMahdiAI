@@ -1,5 +1,6 @@
 import os
 import asyncio
+import logging
 from typing import List, Optional
 from notebooklm import NotebookLMClient
 from app.core.config import get_settings
@@ -7,6 +8,7 @@ from app.models.notebook import Notebook, NotebookQuery
 from sqlmodel import select
 from app.core.db import async_session_maker
 
+logger = logging.getLogger(__name__)
 settings = get_settings()
 
 class NotebookService:
@@ -19,33 +21,41 @@ class NotebookService:
         
         # We run this in a background task to not block the API response
         async def _login_task():
-            async with async_playwright() as p:
-                browser_profile = os.path.join(os.getcwd(), "scratch", "playwright_profile")
-                os.makedirs(browser_profile, exist_ok=True)
-                os.makedirs(os.path.dirname(self.storage_path), exist_ok=True)
-                
-                context = await p.chromium.launch_persistent_context(
-                    user_data_dir=browser_profile,
-                    headless=False,
-                    args=["--disable-blink-features=AutomationControlled", "--password-store=basic"],
-                    ignore_default_args=["--enable-automation"],
-                )
-                page = context.pages[0] if context.pages else await context.new_page()
-                await page.goto("https://notebooklm.google.com/")
-                
-                try:
-                    # Wait until URL is not the sign-in page, or specifically contains /notebook
-                    # NotebookLM redirects to / after login, or /notebook/
-                    await page.wait_for_function("() => !window.location.href.includes('accounts.google.com') && document.querySelector('title') && document.querySelector('title').innerText.includes('NotebookLM')", timeout=300000)
+            try:
+                async with async_playwright() as p:
+                    browser_profile = os.path.join(os.getcwd(), "scratch", "playwright_profile")
+                    os.makedirs(browser_profile, exist_ok=True)
+                    os.makedirs(os.path.dirname(self.storage_path), exist_ok=True)
                     
-                    # Extra wait to ensure cookies are set
-                    await asyncio.sleep(3)
-                    await context.storage_state(path=self.storage_path)
-                    print("Login successful and storage saved.")
-                except Exception as e:
-                    print(f"Login timeout or failed: {e}")
-                finally:
-                    await context.close()
+                    try:
+                        context = await p.chromium.launch_persistent_context(
+                            user_data_dir=browser_profile,
+                            headless=False,
+                            args=["--disable-blink-features=AutomationControlled", "--password-store=basic"],
+                            ignore_default_args=["--enable-automation"],
+                        )
+                    except Exception as e:
+                        logger.error(f"Playwright failed to launch in non-headless mode (is this a headless server?): {e}")
+                        return
+
+                    try:
+                        page = context.pages[0] if context.pages else await context.new_page()
+                        await page.goto("https://notebooklm.google.com/")
+                        
+                        # Wait until URL is not the sign-in page, or specifically contains /notebook
+                        # NotebookLM redirects to / after login, or /notebook/
+                        await page.wait_for_function("() => !window.location.href.includes('accounts.google.com') && document.querySelector('title') && document.querySelector('title').innerText.includes('NotebookLM')", timeout=300000)
+                        
+                        # Extra wait to ensure cookies are set
+                        await asyncio.sleep(3)
+                        await context.storage_state(path=self.storage_path)
+                        logger.info("Login successful and storage saved.")
+                    except Exception as e:
+                        logger.error(f"Login timeout or failed during page navigation: {e}")
+                    finally:
+                        await context.close()
+            except Exception as e:
+                logger.error(f"Playwright background task failed: {e}")
 
         # Start task
         asyncio.create_task(_login_task())
@@ -124,8 +134,21 @@ class NotebookService:
         async with self.lock:
             client = await NotebookLMClient.from_storage(self.storage_path)
             async with client:
-                result = await client.chat.ask(notebook_external_id, question)
+                try:
+                    result = await client.chat.ask(notebook_external_id, question)
+                except Exception as e:
+                    logger.error(f"Error calling NotebookLM API: {e}")
+                    raise Exception("Failed to get a response from NotebookLM.")
+                
+                if not result:
+                    logger.error("NotebookLM returned an empty result.")
+                    raise Exception("NotebookLM returned an empty result.")
+                    
                 answer = result.answer
+                
+                if not answer:
+                    logger.warning("NotebookLM returned a result with an empty answer.")
+                    answer = "No answer was provided by NotebookLM."
                 
                 # Serialize references
                 references = []

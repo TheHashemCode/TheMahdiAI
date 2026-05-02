@@ -98,8 +98,26 @@ async def ask_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if len(answer) > 4000:
             # Delete "thinking" message
             await msg.delete()
-            for i in range(0, len(answer), 4000):
-                await update.message.reply_text(answer[i:i+4000])
+            
+            chunk_size = 4000
+            current_idx = 0
+            while current_idx < len(answer):
+                if len(answer) - current_idx <= chunk_size:
+                    await update.message.reply_text(answer[current_idx:])
+                    break
+                
+                # Find the best place to cut
+                cut_idx = current_idx + chunk_size
+                last_newline = answer.rfind('\n', current_idx, cut_idx)
+                last_space = answer.rfind(' ', current_idx, cut_idx)
+                
+                if last_newline != -1 and last_newline > current_idx + 1000:
+                    cut_idx = last_newline
+                elif last_space != -1:
+                    cut_idx = last_space
+                    
+                await update.message.reply_text(answer[current_idx:cut_idx].strip())
+                current_idx = cut_idx
         else:
             await msg.edit_text(answer)
             
