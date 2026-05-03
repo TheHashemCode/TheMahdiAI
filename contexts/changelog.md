@@ -9,6 +9,19 @@
 - **Interactive History Modal**: Clickable table rows in the dashboard history that reveal full Markdown answers and detailed reference tracking.
 - **Automated Citations**: AI responses automatically append "📚 Referensi Sumber" with bolded inline citations mapped to source titles.
 
+### Fixed
+- **Playwright Headless Mode**: Added `PLAYWRIGHT_HEADLESS` environment variable (defaults to true) to safely run in non-GUI server environments.
+- **Message Truncation**: Fixed Telegram 4000 character limits to truncate nicely on newlines and spaces, preserving markdown blocks.
+- **Query Safety Checks**: Added checks for empty `result` and `answer` returns from Google to prevent silent crashes.
+- **Config Security**: Hardened `/admin/configs` POST endpoint by adding an `ALLOWED_CONFIG_KEYS` validation list to prevent arbitrary database updates.
+- **Redis Quota Race Condition**: Used `nx=True` to prevent duplicate writes during token hydration when server scales horizontally.
+
+### Changed
+- **Async DB Migration**: Updated Telegram Bot backend methods and background services to properly use `async_session_maker` instead of standard sync `Session`.
+- **Per-Notebook Lock**: Refactored the NotebookService lock to a per-notebook basis `defaultdict(asyncio.Lock)` enabling fast concurrent queries for different notebooks while preventing bans on a single notebook.
+- **Deprecated Datetime**: Swept all `datetime.utcnow()` usage across the app and replaced it with timezone-aware `datetime.now(timezone.utc)`.
+- **Environment Variables**: Replaced hardcoded `localhost:8000` strings in Next.js with `process.env.NEXT_PUBLIC_API_URL` for flexible production deployments.
+
 ## [Phase 1.1] - 2026-04-19
 ### Added
 - **Admin Dashboard**: Full-featured Next.js 15+ dashboard with glassmorphism design.

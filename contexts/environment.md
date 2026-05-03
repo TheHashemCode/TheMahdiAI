@@ -46,4 +46,6 @@ TELEGRAM_BOT_TOKEN=...
 TELEGRAM_WEBHOOK_URL=https://...
 # Note: Ensure DB uses BigInteger for telegram_id to support 10-digit IDs.
 S3_BUCKET_NAME=themahdi-ai
+PLAYWRIGHT_HEADLESS=true # Set to false only when using the "Login via UI (Server)" locally
+NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1 # Required for the Next.js Dashboard
 ```
