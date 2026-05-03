@@ -39,9 +39,11 @@ class QuotaManager:
         if self.redis:
             try:
                 key = f"ratelimit:min:{user_id}"
-                count = await self.redis.incr(key)
-                if count == 1:
-                    await self.redis.expire(key, 60)
+                pipe = self.redis.pipeline()
+                pipe.incr(key)
+                pipe.expire(key, 60, nx=True)
+                results = await pipe.execute()
+                count = results[0]
                 return count <= max_per_min, count
             except Exception as e:
                 logger.error(f"Redis Ratelimit Error: {e}")
@@ -61,9 +63,11 @@ class QuotaManager:
         if self.redis:
             try:
                 key = f"quota:day:req:{user_id}"
-                count = await self.redis.incr(key)
-                if count == 1:
-                    await self.redis.expire(key, 86400)
+                pipe = self.redis.pipeline()
+                pipe.incr(key)
+                pipe.expire(key, 86400, nx=True)
+                results = await pipe.execute()
+                count = results[0]
                 return count <= max_reqs, count
             except Exception as e:
                 logger.error(f"Redis Quota Error: {e}")
