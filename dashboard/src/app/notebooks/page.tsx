@@ -48,14 +48,15 @@ export default function NotebooksPage() {
   const [savingChain, setSavingChain] = useState(false);
   const [selectedHistory, setSelectedHistory] = useState<HistoryItem | null>(null);
 
-  const API_BASE = "http://localhost:8000/api/v1/admin/notebooks";
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/admin/notebooks` : "http://localhost:8000/api/v1/admin/notebooks";
+  const CONFIGS_API = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/admin/configs` : "http://localhost:8000/api/v1/admin/configs";
 
   const fetchData = async () => {
     try {
       const [nbRes, histRes, configRes] = await Promise.all([
         fetch(`${API_BASE}/`),
         fetch(`${API_BASE}/history`),
-        fetch(`http://localhost:8000/api/v1/admin/configs`)
+        fetch(CONFIGS_API)
       ]);
       const nbs = await nbRes.json();
       const hist = await histRes.json();
@@ -95,7 +96,7 @@ export default function NotebooksPage() {
   const handleSaveChain = async () => {
     setSavingChain(true);
     try {
-      await fetch(`http://localhost:8000/api/v1/admin/configs`, {
+      await fetch(CONFIGS_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ key: "notebook_fallback_chain", value: JSON.stringify(fallbackChain) })

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from telegram import Update
 from telegram.ext import ContextTypes
 import logging
@@ -33,7 +33,7 @@ async def new_session_command(update: Update, context: ContextTypes.DEFAULT_TYPE
 
         for s in active_sessions:
             s.is_active = False
-            s.closed_at = datetime.utcnow()
+            s.closed_at = datetime.now(timezone.utc)
 
         # Create fresh session
         new_session = ChatSession(

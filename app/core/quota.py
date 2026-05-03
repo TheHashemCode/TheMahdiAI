@@ -1,6 +1,6 @@
 import logging
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional, Tuple
 from redis.asyncio import Redis, from_url
 from sqlmodel import select, func
@@ -47,7 +47,7 @@ class QuotaManager:
                 logger.error(f"Redis Ratelimit Error: {e}")
         
         # Fallback to DB
-        one_min_ago = datetime.utcnow() - timedelta(minutes=1)
+        one_min_ago = datetime.now(timezone.utc) - timedelta(minutes=1)
         stmt = select(func.count(TokenLog.id)).where(
             TokenLog.user_id == db_user_id,
             TokenLog.created_at >= one_min_ago
@@ -69,7 +69,7 @@ class QuotaManager:
                 logger.error(f"Redis Quota Error: {e}")
 
         # Fallback to DB
-        today_start = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+        today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
         stmt = select(func.count(TokenLog.id)).where(
             TokenLog.user_id == db_user_id,
             TokenLog.created_at >= today_start
@@ -93,8 +93,8 @@ class QuotaManager:
                 if current is None:
                     # Hydrate Layer 1 from Layer 2 (DB)
                     val = db_user.daily_token_used
-                    await self.redis.set(key, val)
-                    await self.redis.expire(key, 86400)
+                    # Use set with nx=True to prevent race conditions during hydration
+                    await self.redis.set(key, val, ex=86400, nx=True)
                 else:
                     val = int(current)
                 

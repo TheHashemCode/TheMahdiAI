@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional
 from sqlmodel import Field
 from sqlalchemy import BigInteger, Column
-from app.models.base import BaseModel
+from app.models.base import BaseModel, get_utcnow
 
 class User(BaseModel, table=True):
     __tablename__ = "users"
@@ -20,4 +20,4 @@ class User(BaseModel, table=True):
     daily_token_used: int = Field(default=0)
     token_reset_date: Optional[datetime] = None
     
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=get_utcnow)

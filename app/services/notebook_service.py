@@ -1,3 +1,4 @@
+from collections import defaultdict
 import os
 import asyncio
 import logging
@@ -14,7 +15,11 @@ settings = get_settings()
 class NotebookService:
     def __init__(self):
         self.storage_path = os.path.join(os.getcwd(), "scratch", "notebooklm_storage.json")
-        self.lock = asyncio.Lock()  # Global lock to prevent Google spam bans
+        self.global_lock = asyncio.Lock()  # Lock for global operations like login and sync
+        self.notebook_locks = defaultdict(asyncio.Lock)  # Locks per notebook
+
+    def get_lock(self, notebook_id: str) -> asyncio.Lock:
+        return self.notebook_locks[notebook_id]
 
     async def interactive_login(self):
         from playwright.async_api import async_playwright
@@ -30,7 +35,7 @@ class NotebookService:
                     try:
                         context = await p.chromium.launch_persistent_context(
                             user_data_dir=browser_profile,
-                            headless=False,
+                            headless=os.environ.get("PLAYWRIGHT_HEADLESS", "true").lower() == "true",
                             args=["--disable-blink-features=AutomationControlled", "--password-store=basic"],
                             ignore_default_args=["--enable-automation"],
                         )
@@ -69,7 +74,7 @@ class NotebookService:
     async def sync_notebooks(self):
         """Sync notebooks from Google to local DB"""
         self._ensure_storage()
-        async with self.lock:
+        async with self.global_lock:
             client = await NotebookLMClient.from_storage(self.storage_path)
             async with client:
                 remote_notebooks = await client.notebooks.list()
@@ -92,7 +97,7 @@ class NotebookService:
 
     async def create_notebook(self, title: str) -> Notebook:
         self._ensure_storage()
-        async with self.lock:
+        async with self.global_lock:
             client = await NotebookLMClient.from_storage(self.storage_path)
             async with client:
                 remote_nb = await client.notebooks.create(title)
@@ -109,14 +114,14 @@ class NotebookService:
 
     async def add_source_url(self, notebook_external_id: str, url: str):
         self._ensure_storage()
-        async with self.lock:
+        async with self.get_lock(notebook_external_id):
             client = await NotebookLMClient.from_storage(self.storage_path)
             async with client:
                 return await client.sources.add_url(notebook_external_id, url, wait=True)
 
     async def get_sources(self, notebook_external_id: str) -> List[dict]:
         self._ensure_storage()
-        async with self.lock:
+        async with self.get_lock(notebook_external_id):
             client = await NotebookLMClient.from_storage(self.storage_path)
             async with client:
                 sources = await client.sources.list(notebook_external_id)
@@ -131,7 +136,7 @@ class NotebookService:
     async def ask_question(self, notebook_external_id: str, question: str, user_id: Optional[str] = None, source: str = "dashboard") -> dict:
         self._ensure_storage()
         
-        async with self.lock:
+        async with self.get_lock(notebook_external_id):
             client = await NotebookLMClient.from_storage(self.storage_path)
             async with client:
                 try:
