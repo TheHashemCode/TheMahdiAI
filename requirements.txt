@@ -1,0 +1,16 @@
+fastapi==0.111.0
+sqlmodel==0.0.18
+asyncpg==0.29.0
+python-telegram-bot[job-queue,rate-limiter]==21.1.1
+litellm==1.40.1
+qdrant-client==1.9.1
+arq==0.26.0
+redis<5.0.0
+pydantic-settings==2.2.1
+SQLAlchemy==2.0.30
+alembic==1.13.1
+python-multipart==0.0.9
+uvicorn[standard]==0.29.0
+python-dotenv==1.0.1
+notebooklm-py[browser]
+playwright

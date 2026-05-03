@@ -1,0 +1,229 @@
+.card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+}
+
+.tableHeader {
+  margin-bottom: 24px;
+}
+
+.tableHeader h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.tableHeader p {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+}
+
+.tableWrap {
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.tableWrap table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableWrap th {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 14px 20px;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.tableWrap td {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  font-size: 0.92rem;
+  color: #e2e8f0;
+}
+
+.tableWrap tr {
+  cursor: pointer;
+}
+
+.tableWrap tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+
+.btnView {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--primary);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.btnView:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(14px);
+  z-index: 9999;
+  display: block; /* No flex, use transform for content instead */
+}
+
+.modalContent {
+  position: fixed;
+  top: 52%; /* Slightly lower than exact center for "relaxed" feel */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  width: 90%;
+  max-width: 800px;
+  height: 75vh; /* Reduced height for better breathing room */
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+  animation: modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+@keyframes modalSlideUp {
+  from { transform: translate(-50%, -45%); opacity: 0; }
+  to { transform: translate(-50%, -50%); opacity: 1; }
+}
+
+@keyframes modalScale {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modalHeader {
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalHeader h4 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 2px;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+.subTitle {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.btnClose {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btnClose:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.2);
+  transform: rotate(90deg);
+}
+
+.chatArea {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px; /* Increased padding */
+  display: flex;
+  flex-direction: column;
+  gap: 28px; /* More space between messages */
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.messageRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 80%; /* Slightly narrower for better flow */
+}
+
+.userMsg { align-self: flex-end; align-items: flex-end; }
+.assistantMsg { align-self: flex-start; align-items: flex-start; }
+
+.roleLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bubble {
+  padding: 12px 18px;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.userBubble {
+  background: var(--primary);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.assistantBubble {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  color: #eee;
+  border-bottom-left-radius: 4px;
+}
+
+.noHistory {
+  color: var(--text-dim);
+  text-align: center;
+  padding: 40px;
+  font-style: italic;
+}
+
+.emptyCell {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 48px 20px !important;
+}
