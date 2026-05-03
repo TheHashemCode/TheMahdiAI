@@ -64,6 +64,7 @@ async def update_config(config_data: Dict[str, str], session: AsyncSession = Dep
     """Update or create a bot config value."""
     key = config_data.get("key")
     value = config_data.get("value")
+    description = config_data.get("description")
     
     if not key or value is None:
         raise HTTPException(status_code=400, detail="Key and value are required")
@@ -77,8 +78,10 @@ async def update_config(config_data: Dict[str, str], session: AsyncSession = Dep
     
     if db_config:
         db_config.value = value
+        if description is not None:
+            db_config.description = description
     else:
-        db_config = BotConfig(key=key, value=value)
+        db_config = BotConfig(key=key, value=value, description=description)
         session.add(db_config)
         
     await session.commit()
