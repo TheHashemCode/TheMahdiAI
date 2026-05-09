@@ -90,6 +90,34 @@ pip install -r requirements-dev.txt
 make test
 ```
 
+You can pass custom test args (without editing Makefile):
+
+```bash
+make test ARGS="-q -k quota"
+```
+
+### CI
+
+Every push and pull request runs:
+
+```bash
+make test
+```
+
+The workflow uses Python 3.11 on GitHub Actions.
+
+## 🤝 Contributing
+
+- See [`CONTRIBUTING.md`](CONTRIBUTING.md) for contribution workflow.
+- Use clear, small PRs with focused scope and tests.
+- Keep secrets out of repository history (`.env*`, API keys, tokens).
+
+### Development checklist
+
+- Use `make test` before pushing.
+- Update docs when behavior changes.
+- Include or update unit tests for logic changes.
+
 ## 🏗️ Technical Stack
 
 - **Framework**: [FastAPI](https://fastapi.tiangolo.com/)
@@ -106,16 +134,7 @@ make test
 - `contexts/`: Knowledge base for AI Agents and development best practices.
 - `alembic/`: Database migration scripts.
 - `assets/`: Project images and branding.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feat/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feat/AmazingFeature`)
-5. Open a Pull Request
+- `CONTRIBUTING.md`: Contributor guide.
 
 ## 📜 License
 

@@ -22,7 +22,7 @@ class DummyCircuitBreaker:
 
 
 @pytest.mark.asyncio
-async def test_call_llm_with_provider_raises_when_api_key_missing(monkeypatch):
+async def test_call_llm_with_provider_raises_when_api_key_missing():
     with pytest.raises(ValueError, match="API key for openai is missing"):
         await ai_gateway.call_llm_with_provider(
             "openai",

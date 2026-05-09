@@ -1,5 +1,3 @@
-import time
-
 from app.core.circuit_breaker import CircuitBreaker, CircuitBreakerState
 
 
@@ -18,7 +16,7 @@ def test_circuit_breaker_reaches_open_state_after_threshold():
     assert cb.can_make_request() is False
 
 
-def test_circuit_breaker_recovers_from_open_to_closed(monkeypatch):
+def test_circuit_breaker_recovers_from_open_to_closed():
     cb = CircuitBreaker(failure_threshold=1, recovery_timeout_sec=0)
 
     cb.record_failure()
