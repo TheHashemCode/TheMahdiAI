@@ -79,6 +79,7 @@ celerybeat-schedule
 
 # Environments
 .env
+.env.production
 .venv
 env/
 venv/
@@ -122,6 +123,7 @@ logs/
 *.mp4
 *.mp3
 *.txt
+!requirements-dev.txt
 !requirements.txt
 !README.md
 !themahdiai_blueprint.md

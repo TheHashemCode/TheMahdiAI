@@ -80,6 +80,16 @@ Built for the community, it integrates Quranic texts, authentic Hadiths, and sch
    ```
    *Dashboard will be available at [http://localhost:10313](http://localhost:10313)*
 
+## ✅ Testing
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+make test
+```
+
 ## 🏗️ Technical Stack
 
 - **Framework**: [FastAPI](https://fastapi.tiangolo.com/)
